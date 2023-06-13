@@ -1,21 +1,28 @@
 import type { ICType } from '@kiltprotocol/sdk-js';
 
-import { emailCType } from '../cTypes/emailCType';
+import { personalCType } from '../cTypes/personalCType';
 
 import { twitterCType } from '../cTypes/twitterCType';
+import { companyCtype } from '../cTypes/companyCType';
+import { driverCType } from '../cTypes/driverCType';
 
-export const supportedCTypeKeys = ['email', 'twitter'] as const;
+
+export const supportedCTypeKeys = ['personal', 'twitter', 'company', 'driver'] as const;
 
 export type SupportedCType = (typeof supportedCTypeKeys)[number];
 
 export const supportedCTypes: Record<SupportedCType, ICType> = {
-  email: emailCType,
+  personal: personalCType,
   twitter: twitterCType,
+  company: companyCtype,
+  driver: driverCType,
 };
 
 export const kiltCost: Record<SupportedCType, number> = {
-  email: 2,
+  personal: 5,
   twitter: 3,
+  company: 1,
+  driver: 2,
 };
 
 export function isSupportedCType(cType: string): cType is SupportedCType {

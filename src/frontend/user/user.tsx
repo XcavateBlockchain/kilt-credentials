@@ -267,9 +267,9 @@ function Home() {
         This KILT Attester Example demonstrates how to issue credentials for a
         couple basic claim types which already exist on the KILT blockchain. The
         user chooses a claim type, enters the claim data, makes a (mock)
-        payment, and the claim is sent to the attester to be reviewed.
+        payment, and the claim is sent to the attester to be reviewed. WUWHU
       </p>
-
+      <h2>Choose your claim type:</h2>
       <h2>Choose your claim type:</h2>
 
       <ul>
