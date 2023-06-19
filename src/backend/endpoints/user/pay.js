@@ -1,11 +1,11 @@
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { logger } from '../../utilities/logger';
-import { Session, sessionMiddleware } from '../../utilities/sessionStorage';
+import {  sessionMiddleware } from '../../utilities/sessionStorage';
 import { paths } from '../paths';
 import { addClaim } from '../../utilities/credentialStorage';
 
-async function handler(request: Request, response: Response): Promise<void> {
+async function handler(request, response){
   // implement your payment logic here
 
   try {
@@ -13,7 +13,7 @@ async function handler(request: Request, response: Response): Promise<void> {
 
     const {
       session: { credential },
-    } = request as Request & { session: Session };
+    } = request  & { session };
 
     if (!credential) {
       throw new Error('Session credential not found');

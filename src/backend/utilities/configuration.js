@@ -3,12 +3,11 @@ import path from 'node:path';
 
 import dotenv from 'dotenv';
 import { pino } from 'pino';
-import { DidUri } from '@kiltprotocol/sdk-js';
 
 dotenv.config();
 
 class ConfigurationError extends Error {
-  constructor(message: string) {
+  constructor(message) {
     super(message);
     pino().fatal(message);
     process.exit(1);
@@ -22,7 +21,7 @@ if (!baseUri) {
   throw new ConfigurationError('URL is not provided');
 }
 
-const did = env.DID as DidUri;
+const did = env.DID ;
 
 const payerMnemonic = env.SECRET_PAYER_MNEMONIC;
 if (!payerMnemonic) {
@@ -57,7 +56,7 @@ if (!adminUsername || !adminPassword) {
 }
 
 export const configuration = {
-  port: parseInt(env.PORT as string) || 3000,
+  port: parseInt(env.PORT) || 3000,
   blockchainEndpoint,
   baseUri,
   distFolder: path.join(cwd(), 'dist', 'frontend'),

@@ -16,18 +16,15 @@ import { paths } from '../paths';
 const TTL = 5 * 60 * 60 * 1000;
 const TERMS = 'https://example.com/terms-and-conditions';
 
-interface Input {
-  type: SupportedCType;
-  claimContents: IClaimContents;
-}
 
-async function handler(request: Request, response: Response): Promise<void> {
+
+async function handler(request, response){
   try {
     logger.debug('Submit terms started');
-    const { session } = request as Request & { session: Session };
+    const { session } = request & { session };
     const { encryptionKeyUri } = session;
 
-    const { type, claimContents } = request.body as Input;
+    const { type, claimContents } = request.body ;
 
     const claim = Claim.fromCTypeAndClaimContents(
       supportedCTypes[type],
@@ -36,7 +33,7 @@ async function handler(request: Request, response: Response): Promise<void> {
     );
     logger.debug('Generated claim');
 
-    const quote: IQuote = {
+    const quote = {
       attesterDid: configuration.did,
       cTypeHash: claim.cTypeHash,
       cost: { tax: { VAT: 0 }, net: kiltCost[type], gross: kiltCost[type] },

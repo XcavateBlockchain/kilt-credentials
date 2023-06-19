@@ -52,12 +52,16 @@ export async function getSession(
   const { dAppEncryptionKeyUri, challenge, sessionId } =
     await getSessionValues();
   const dAppName = 'CertifiedProof';
-
+  
   const session = await provider.startSession(
     dAppName,
     dAppEncryptionKeyUri,
     challenge,
   );
+
+ 
+
+  
 
   const { encryptionKeyUri, encryptedChallenge, nonce } = session;
   await checkSession(
@@ -70,6 +74,6 @@ export async function getSession(
   );
 
   const { name } = provider;
-
+   
   return { ...session, sessionId, name };
 }

@@ -9,7 +9,7 @@ import {
 import { keypairsPromise } from './keypairs';
 import { didDocumentPromise } from './didDocument';
 
-export async function sign({ data, keyRelationship }: SignRequestData) {
+export async function sign({ data, keyRelationship }) {
   if (keyRelationship === 'capabilityDelegation') {
     throw new Error('Delegation not supported');
   }
@@ -22,7 +22,7 @@ export async function sign({ data, keyRelationship }: SignRequestData) {
       ? [authentication, authenticationKey]
       : [assertionMethod, assertionMethodKey];
 
-  const keyUri: DidResourceUri = `${did}${publicKey.id}`;
+  const keyUri = `${did}${publicKey.id}`;
 
   return {
     signature: keypair.sign(data, { withType: false }),
@@ -31,11 +31,11 @@ export async function sign({ data, keyRelationship }: SignRequestData) {
   };
 }
 
-export async function signWithAssertionMethod({ data }: { data: Uint8Array }) {
+export async function signWithAssertionMethod({ data }) {
   const { assertionMethod } = await keypairsPromise;
 
   const { did, assertionMethodKey } = await didDocumentPromise;
-  const keyUri: DidResourceUri = `${did}${assertionMethodKey.id}`;
+  const keyUri = `${did}${assertionMethodKey.id}`;
 
   return {
     signature: assertionMethod.sign(data, { withType: false }),
@@ -47,11 +47,11 @@ export async function signWithAssertionMethod({ data }: { data: Uint8Array }) {
 export async function encrypt({
   data,
   peerPublicKey,
-}: Parameters<EncryptCallback>[0]) {
+}) {
   const { keyAgreement } = await keypairsPromise;
 
   const { did, keyAgreementKey } = await didDocumentPromise;
-  const keyUri: DidResourceUri = `${did}${keyAgreementKey.id}`;
+  const keyUri = `${did}${keyAgreementKey.id}`;
 
   const { sealed, nonce } = naclSeal(
     data,
@@ -70,7 +70,7 @@ export async function decrypt({
   data,
   nonce,
   peerPublicKey,
-}: Parameters<DecryptCallback>[0]) {
+}) {
   const { keyAgreement } = await keypairsPromise;
 
   const decrypted = naclOpen(

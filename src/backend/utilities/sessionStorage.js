@@ -1,35 +1,22 @@
-import { NextFunction, Request, Response } from 'express';
+
 import { StatusCodes } from 'http-status-codes';
 import NodeCache from 'node-cache';
-import { DidResourceUri, DidUri, ICredential } from '@kiltprotocol/sdk-js';
+
 
 import { sessionHeader } from '../endpoints/user/sessionHeader';
 
-export interface BasicSession {
-  sessionId: string;
-  did?: DidUri;
-  encryptionKeyUri?: DidResourceUri;
-  didChallenge?: string;
-  didConfirmed?: boolean;
-  credential?: ICredential;
-}
-
-export type Session = BasicSession & {
-  did: DidUri;
-  encryptionKeyUri: DidResourceUri;
-};
 
 const sessionStorage = new NodeCache({ stdTTL: 5 * 60 * 60, useClones: false });
 
-function getSessionById(sessionId: string): BasicSession {
+function getSessionById(sessionId) {
   const session = sessionStorage.get(sessionId);
   if (!session) {
     throw new Error(`Unknown or expired session ${sessionId}`);
   }
-  return session as BasicSession;
+  return session ;
 }
 
-function getBasicSession(request: Request): BasicSession {
+function getBasicSession(request) {
   const sessionId = request.get(sessionHeader);
 
   if (!sessionId) {
@@ -39,7 +26,7 @@ function getBasicSession(request: Request): BasicSession {
   return getSessionById(sessionId);
 }
 
-function getSession(request: Request): Session {
+function getSession(request) {
   const session = getBasicSession(request);
 
   const { did, didConfirmed, encryptionKeyUri } = session;
@@ -50,18 +37,18 @@ function getSession(request: Request): Session {
   return { ...session, did, encryptionKeyUri };
 }
 
-export function setSession(session: BasicSession): void {
+export function setSession(session) {
   sessionStorage.set(session.sessionId, session);
 }
 
 export function basicSessionMiddleware(
-  request: Request,
-  response: Response,
-  next: NextFunction,
-): void {
+  request,
+  response,
+  next,
+) {
   try {
     const session = getBasicSession(request);
-    (request as Request & { session: BasicSession }).session = session;
+    (request  & { session }).session = session;
     next();
   } catch (error) {
     response.status(StatusCodes.FORBIDDEN).send(error);
@@ -69,13 +56,13 @@ export function basicSessionMiddleware(
 }
 
 export function sessionMiddleware(
-  request: Request,
-  response: Response,
-  next: NextFunction,
-): void {
+  request,
+  response,
+  next,
+) {
   try {
     const session = getSession(request);
-    (request as Request & { session: Session }).session = session;
+    (request  & { session }).session = session;
     next();
   } catch (error) {
     response.status(StatusCodes.FORBIDDEN).send(error);

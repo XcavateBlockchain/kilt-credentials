@@ -67,6 +67,7 @@ function Connect({ onConnect }: { onConnect: (s: Session) => void }) {
 
   useEffect(() => {
     function handler() {
+      
       setExtensions(getCompatibleExtensions());
     }
 
@@ -78,10 +79,11 @@ function Connect({ onConnect }: { onConnect: (s: Session) => void }) {
 
   const handleConnect = useCallback(
     async (extension: string) => {
+      
       try {
         setProcessing(true);
         setError(undefined);
-
+        console.log('session', await getSession(kilt[extension]));
         onConnect(await getSession(kilt[extension]));
       } catch (exception) {
         const { message } = exceptionToError(exception);
@@ -107,15 +109,15 @@ function Connect({ onConnect }: { onConnect: (s: Session) => void }) {
         </p>
       )}
 
-      {extensions.map((extension) => (
+    
         <button
-          key={extension}
+      
           type="button"
-          onClick={() => handleConnect(extension)}
+          onClick={() => handleConnect(extensions[0])}
         >
-          Connect to {kilt[extension].name}
+          Connect to {extensions[0]} Wallet
         </button>
-      ))}
+    
 
       {processing && <p>Connecting…</p>}
 
@@ -216,12 +218,12 @@ function Claim() {
 
   const cType = supportedCTypes[type];
   const { title, properties } = cType;
-
+ 
   return (
     <section>
       <h2>{title}</h2>
       <p>Price: {kiltCost[type]} KILT</p>
-
+      
       {status === 'start' && (
         // implement custom claim forms if you want to handle non-string properties
         <form onSubmit={handleClaim}>
@@ -230,7 +232,7 @@ function Claim() {
               {property}: <input name={property} disabled={!session} required />
             </label>
           ))}
-
+        
           {!session && <Connect onConnect={handleConnect} />}
 
           {session && <button type="submit">Submit</button>}
@@ -251,7 +253,7 @@ function Claim() {
         </p>
       )}
 
-      {error && errors[error]}
+      {error && errors[error] }
 
       <Link to={paths.home}>Back</Link>
     </section>
@@ -270,7 +272,7 @@ function Home() {
         payment, and the claim is sent to the attester to be reviewed. WUWHU
       </p>
       <h2>Choose your claim type:</h2>
-      <h2>Choose your claim type:</h2>
+      
 
       <ul>
         {supportedCTypeKeys.map((type) => (

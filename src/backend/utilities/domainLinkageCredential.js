@@ -1,8 +1,6 @@
 import {
   Claim,
   Credential,
-  IClaimContents,
-  ICredentialPresentation,
 } from '@kiltprotocol/sdk-js';
 import {
   constants,
@@ -28,7 +26,7 @@ const context = [
 
 const TTL = 1000 * 60 * 60 * 24 * 365 * 5; // 5 years
 
-export async function attestDomainLinkage(): Promise<ICredentialPresentation> {
+export async function attestDomainLinkage() {
   const claimContents = {
     id: configuration.did,
     origin: configuration.baseUri,
@@ -49,19 +47,7 @@ export async function attestDomainLinkage(): Promise<ICredentialPresentation> {
   });
 }
 
-interface DomainLinkageCredential
-  extends Omit<
-    VerifiableCredential,
-    '@context' | 'id' | 'legitimationIds' | 'credentialSubject' | 'proof'
-  > {
-  '@context': typeof context;
-  credentialSubject: IClaimContents;
-  proof: Proof;
-}
-
-export function fromCredential(
-  input: ICredentialPresentation,
-): DomainLinkageCredential {
+export function fromCredential(input) {
   const credentialSubject = {
     ...input.claim.contents,
     rootHash: input.rootHash,

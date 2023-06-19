@@ -1,15 +1,10 @@
-import type { DidDocument, KeyRelationship } from '@kiltprotocol/sdk-js';
 import { Did, Utils } from '@kiltprotocol/sdk-js';
 
 import { keypairsPromise } from './keypairs';
 import { configuration } from './configuration';
 import { initKilt } from './initKilt';
 
-async function compareKeys(
-  configured: { publicKey: Uint8Array },
-  resolved: { publicKey: Uint8Array } | undefined,
-  relationship: KeyRelationship,
-): Promise<void> {
+async function compareKeys(configured, resolved, relationship) {
   if (!resolved) {
     throw new Error(
       `Your on-chain DID is broken: the resolved key for ${relationship} is undefined`,
@@ -26,7 +21,7 @@ async function compareKeys(
   }
 }
 
-async function compareAllKeys(fullDid: DidDocument): Promise<void> {
+async function compareAllKeys(fullDid) {
   const keypairs = await keypairsPromise;
 
   await compareKeys(

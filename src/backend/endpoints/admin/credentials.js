@@ -12,7 +12,7 @@ import { logger } from '../../utilities/logger';
 import { attest } from '../../utilities/attest';
 import { revoke } from '../../utilities/revoke';
 
-function sendErrorResponse(error: unknown, response: Response) {
+function sendErrorResponse(error, response) {
   logger.error(error);
   if (error instanceof NotFoundError) {
     response.status(StatusCodes.NOT_FOUND).send(error);

@@ -20,7 +20,7 @@ import {
   } catch (error) {
     console.warn(
       'Looks like the .well-known folder doesn’t exist, creating',
-      (error as Error).message,
+      (error).message,
     );
     await mkdir(wellKnown);
   }

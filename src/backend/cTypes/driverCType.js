@@ -1,6 +1,6 @@
-import type { ICType } from '@kiltprotocol/sdk-js';
 
-export const driverCType: ICType = {
+
+export const driverCType = {
   $schema: 'http://kilt-protocol.org/draft-01/ctype#',
   title: 'Drivers License',
   properties: { age: { type: 'string' }, name: { type: 'string' } },

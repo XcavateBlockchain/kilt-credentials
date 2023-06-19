@@ -1,6 +1,6 @@
-import type { ICType } from '@kiltprotocol/sdk-js';
 
-export const personalCType: ICType = {
+
+export const personalCType = {
   $schema: 'http://kilt-protocol.org/draft-01/ctype#',
   title: 'PersonalDID',
   properties: {

@@ -1,6 +1,6 @@
-import type { ICType } from '@kiltprotocol/sdk-js';
 
-export const companyCtype: ICType = {
+
+export const companyCtype = {
   $schema: 'http://kilt-protocol.org/draft-01/ctype#',
   title: 'Company',
   properties: {

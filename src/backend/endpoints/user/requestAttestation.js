@@ -11,7 +11,7 @@ import {
 import { supportedCTypes } from '../../utilities/supportedCTypes';
 import { paths } from '../paths';
 
-async function handler(request: Request, response: Response): Promise<void> {
+async function handler(request, response){
   try {
     logger.debug('Handling attestation request');
 
@@ -48,7 +48,7 @@ async function handler(request: Request, response: Response): Promise<void> {
     }
     logger.debug('CType supported');
 
-    const { session } = request as Request & { session: Session };
+    const { session } = request & { session };
     setSession({ ...session, credential });
 
     logger.debug('Request attestation complete');

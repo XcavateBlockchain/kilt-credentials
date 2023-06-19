@@ -2,15 +2,13 @@ import {
   Attestation,
   Blockchain,
   ConfigService,
-  Did,
-  IAttestation,
-  ICredential,
+  Did
 } from '@kiltprotocol/sdk-js';
 import { configuration } from './configuration';
 import { sign } from './cryptoCallbacks';
 import { keypairsPromise } from './keypairs';
 
-export async function attest(credential: ICredential): Promise<IAttestation> {
+export async function attest(credential){
   const api = ConfigService.get('api');
 
   const attestation = Attestation.fromCredentialAndDid(

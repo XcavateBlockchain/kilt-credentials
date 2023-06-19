@@ -3,13 +3,12 @@ import {
   Blockchain,
   ConfigService,
   Did,
-  ICredential,
 } from '@kiltprotocol/sdk-js';
 import { configuration } from './configuration';
 import { sign } from './cryptoCallbacks';
 import { keypairsPromise } from './keypairs';
 
-export async function revoke(credential: ICredential) {
+export async function revoke(credential) {
   const api = ConfigService.get('api');
   const { rootHash } = credential;
 

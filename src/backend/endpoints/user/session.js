@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import { Did, DidResourceUri, Utils } from '@kiltprotocol/sdk-js';
@@ -7,7 +7,6 @@ import { randomAsHex } from '@polkadot/util-crypto';
 import { didDocumentPromise } from '../../utilities/didDocument';
 import { decrypt } from '../../utilities/cryptoCallbacks';
 import {
-  BasicSession,
   basicSessionMiddleware,
   setSession,
 } from '../../utilities/sessionStorage';
@@ -15,19 +14,13 @@ import { logger } from '../../utilities/logger';
 
 import { paths } from '../paths';
 
-export interface CheckSessionInput {
-  encryptionKeyUri: DidResourceUri;
-  encryptedChallenge: string;
-  nonce: string;
-}
-
-async function handler(request: Request, response: Response): Promise<void> {
+async function handler(request, response) {
   try {
     logger.debug('Session confirmation started');
 
-    const payload = request.body as CheckSessionInput;
+    const payload = request.body;
     const { encryptionKeyUri, encryptedChallenge, nonce } = payload;
-    const { session } = request as Request & { session: BasicSession };
+    const { session } = request & { session };
 
     const encryptionKey = await Did.resolveKey(encryptionKeyUri);
 
@@ -79,23 +72,17 @@ function startSession() {
   };
 }
 
-export interface GetSessionOutput {
-  dAppEncryptionKeyUri: DidResourceUri;
-  sessionId: string;
-  challenge: string;
-}
-
 const path = paths.session;
 
 export const session = Router();
 
 session.get(path, async (request, response) => {
   const { did, keyAgreementKey } = await didDocumentPromise;
-  const dAppEncryptionKeyUri: DidResourceUri = `${did}${keyAgreementKey.id}`;
+  const dAppEncryptionKeyUri = `${did}${keyAgreementKey.id}`;
   response.send({
     dAppEncryptionKeyUri,
     ...startSession(),
-  } as GetSessionOutput);
+  });
 });
 
 session.post(path, basicSessionMiddleware, handler);
