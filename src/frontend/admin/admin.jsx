@@ -14,15 +14,15 @@ import { paths as apiPaths } from '../../backend/endpoints/paths';
 import { paths } from '../utilities/paths';
 import { Credential } from '../../backend/utilities/credentialStorage';
 
-function generateAdminApiPath(path: string, params?: Record<string, unknown>) {
+function generateAdminApiPath(path, params) {
   return generatePath(`/admin${path}`, params);
 }
 
 function Credential() {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  const [credential, setCredential] = useState<Credential>();
+  const [credential, setCredential] = useState();
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -139,7 +139,7 @@ function Credential() {
   );
 }
 
-function Credentials({ credentials }: { credentials: [string, Credential][] }) {
+function Credentials({ credentials }) {
   return (
     <ul>
       {credentials.map(([id]) => (
@@ -152,7 +152,7 @@ function Credentials({ credentials }: { credentials: [string, Credential][] }) {
 }
 
 function Admin() {
-  const [credentials, setCredentials] = useState<[string, Credential][]>();
+  const [credentials, setCredentials] = useState();
   const [error, setError] = useState(false);
 
   const pendingCredentials = credentials?.filter(
@@ -170,7 +170,7 @@ function Admin() {
       try {
         const credentials = await ky
           .get(generateAdminApiPath(apiPaths.credentials.list))
-          .json<Record<string, Credential>>();
+          .json();
 
         setCredentials(Object.entries(credentials));
       } catch {
@@ -212,7 +212,7 @@ function Admin() {
   );
 }
 
-const root = createRoot(document.querySelector('#app') as HTMLElement);
+const root = createRoot(document.querySelector('#app'));
 root.render(
   <BrowserRouter>
     <Routes>

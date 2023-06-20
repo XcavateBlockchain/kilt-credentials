@@ -27,13 +27,14 @@ import {
   supportedCTypes,
   supportedCTypeKeys,
   isSupportedCType,
-} from '../../backend/utilities/supportedCTypes';
-import { paths as apiPaths } from '../../backend/endpoints/paths';
-import { sessionHeader } from '../../backend/endpoints/user/sessionHeader';
+} from '../../backend/utilities/supportedCTypes.js';
+import { paths as apiPaths } from '../../backend/endpoints/paths.js';
+import { sessionHeader } from '../../backend/endpoints/user/sessionHeader.js'; 
+require('dotenv').config()
 
-type FlowError = 'closed' | 'unauthorized' | 'unknown';
+type = 'closed' | 'unauthorized' | 'unknown';
 
-const errors: Record<FlowError, JSX.Element> = {
+const errors = {
   closed: <p>Your wallet was closed. Please try again.</p>,
   unauthorized: (
     <p>
@@ -57,13 +58,13 @@ const errors: Record<FlowError, JSX.Element> = {
   ),
 };
 
-function Connect({ onConnect }: { onConnect: (s: Session) => void }) {
+function Connect({ onConnect }) {
   const { kilt } = apiWindow;
 
   const [extensions, setExtensions] = useState(getCompatibleExtensions());
 
   const [processing, setProcessing] = useState(false);
-  const [error, setError] = useState<FlowError>();
+  const [error, setError] = useState();
 
   useEffect(() => {
     function handler() {
@@ -78,7 +79,7 @@ function Connect({ onConnect }: { onConnect: (s: Session) => void }) {
   }, []);
 
   const handleConnect = useCallback(
-    async (extension: string) => {
+    async (extension) => {
       
       try {
         setProcessing(true);
@@ -129,18 +130,18 @@ function Connect({ onConnect }: { onConnect: (s: Session) => void }) {
 function Claim() {
   const { type } = useParams();
 
-  const [session, setSession] = useState<Session>();
+  const [session, setSession] = useState();
 
   const [status, setStatus] = useState<'start' | 'requested' | 'paid'>('start');
 
-  const [error, setError] = useState<FlowError>();
+  const [error, setError] = useState();
 
-  const handleConnect = useCallback((session: Session) => {
+  const handleConnect = useCallback((session) => {
     setSession(session);
   }, []);
 
   const handleClaim = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
+    async (event) => {
       event.preventDefault();
       setError(undefined);
 
@@ -150,7 +151,7 @@ function Claim() {
 
       const claimContents = Object.fromEntries(
         new FormData(event.currentTarget).entries(),
-      ) as IClaimContents;
+      );
 
       try {
         const { sessionId } = session;
@@ -165,7 +166,7 @@ function Claim() {
         });
 
         // encrypt submit-terms message on the backend
-        const message: IEncryptedMessage = await ky
+        const message = await ky
           .post(apiPaths.terms, {
             headers,
             json: { type, claimContents },
@@ -191,7 +192,7 @@ function Claim() {
 
   // implement your preferred payment service
   const handlePayment = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
+    async (event) => {
       event.preventDefault();
       setError(undefined);
 
@@ -287,7 +288,7 @@ function Home() {
   );
 }
 
-const root = createRoot(document.querySelector('#app') as HTMLElement);
+const root = createRoot(document.querySelector('#app'));
 root.render(
   <BrowserRouter>
     <Routes>
