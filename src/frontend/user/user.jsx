@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 
-import { FormEvent, useCallback, useEffect, useState } from 'react';
+import {  useCallback, useEffect, useState } from 'react';
 import {
   BrowserRouter,
   generatePath,
@@ -11,13 +11,13 @@ import {
 } from 'react-router-dom';
 
 import ky from 'ky';
-import { IClaimContents, IEncryptedMessage } from '@kiltprotocol/sdk-js';
+
 
 import {
   apiWindow,
   getCompatibleExtensions,
   getSession,
-  Session,
+
 } from '../utilities/session';
 import { exceptionToError } from '../utilities/exceptionToError';
 import { paths } from '../utilities/paths';
@@ -80,11 +80,12 @@ function Connect({ onConnect }) {
 
   const handleConnect = useCallback(
     async (extension) => {
-      
+      console.log("Ex",await getSession(kilt[extension]));
       try {
         setProcessing(true);
         setError(undefined);
         console.log('session', await getSession(kilt[extension]));
+       
         onConnect(await getSession(kilt[extension]));
       } catch (exception) {
         const { message } = exceptionToError(exception);
@@ -132,7 +133,7 @@ function Claim() {
 
   const [session, setSession] = useState();
 
-  const [status, setStatus] = useState<'start' | 'requested' | 'paid'>('start');
+  const [status, setStatus] = useState('start');
 
   const [error, setError] = useState();
 

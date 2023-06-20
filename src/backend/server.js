@@ -19,7 +19,6 @@ import { userRouter } from './routers/user';
   app.use('/admin', auth, adminRouter);
   app.use('/', userRouter);
 
-  logger.info('Routes configured');
 
   const host = '0.0.0.0';
   const { port, baseUri } = configuration;

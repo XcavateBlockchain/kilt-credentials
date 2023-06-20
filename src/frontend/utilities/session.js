@@ -1,4 +1,4 @@
-import { DidResourceUri, IEncryptedMessage } from '@kiltprotocol/sdk-js';
+
 
 import {
   checkSession,
@@ -14,6 +14,7 @@ export function getCompatibleExtensions() {
 }
 
 export async function getSession(provider) {
+
   if (!provider) {
     throw new Error("No provider")
   }
@@ -23,13 +24,17 @@ export async function getSession(provider) {
     challenge,
     sessionId
   } = await getSessionValues()
-  const dAppName = "CertifiedProof"
+  const dAppName = "XCAVATE"
+
+  
 
   const session = await provider.startSession(
     dAppName,
     dAppEncryptionKeyUri,
     challenge
-  )
+  );
+
+ 
 
   const { encryptionKeyUri, encryptedChallenge, nonce } = session
   await checkSession(

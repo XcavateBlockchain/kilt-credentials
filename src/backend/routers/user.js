@@ -4,6 +4,7 @@ import { requestAttestation } from '../endpoints/user/requestAttestation';
 import { session } from '../endpoints/user/session';
 import { terms } from '../endpoints/user/terms';
 import { configuration } from '../utilities/configuration';
+import { logger } from '../utilities/logger';
 
 export const userRouter = Router();
 
