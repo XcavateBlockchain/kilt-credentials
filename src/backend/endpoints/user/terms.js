@@ -21,7 +21,7 @@ const TERMS = 'https://example.com/terms-and-conditions';
 async function handler(request, response){
   try {
     logger.debug('Submit terms started');
-    const { session } = request & { session };
+    const { session } = request;
     const { encryptionKeyUri } = session;
 
     const { type, claimContents } = request.body ;

@@ -20,7 +20,8 @@ async function handler(request, response) {
 
     const payload = request.body;
     const { encryptionKeyUri, encryptedChallenge, nonce } = payload;
-    const { session } = request & { session };
+    const { session } = request;
+    console.log(request);
 
     const encryptionKey = await Did.resolveKey(encryptionKeyUri);
 
@@ -37,6 +38,7 @@ async function handler(request, response) {
     logger.debug('Session confirmation decrypted challenge');
 
     const decryptedChallenge = Utils.Crypto.u8aToHex(data);
+    console.log(session);
     const originalChallenge = session.didChallenge;
 
     if (decryptedChallenge !== originalChallenge) {
@@ -56,6 +58,7 @@ async function handler(request, response) {
     logger.debug('Challenge confirmation matches');
     response.sendStatus(StatusCodes.NO_CONTENT);
   } catch (error) {
+    console.error(error);
     response.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
   }
 }

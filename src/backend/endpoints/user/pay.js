@@ -13,7 +13,7 @@ async function handler(request, response){
 
     const {
       session: { credential },
-    } = request  & { session };
+    } = request;
 
     if (!credential) {
       throw new Error('Session credential not found');

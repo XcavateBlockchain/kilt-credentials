@@ -48,7 +48,7 @@ async function handler(request, response){
     }
     logger.debug('CType supported');
 
-    const { session } = request & { session };
+    const { session } = request;
     setSession({ ...session, credential });
 
     logger.debug('Request attestation complete');

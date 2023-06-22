@@ -48,7 +48,7 @@ export function basicSessionMiddleware(
 ) {
   try {
     const session = getBasicSession(request);
-    (request  & { session }).session = session;
+    request.session = session;
     next();
   } catch (error) {
     response.status(StatusCodes.FORBIDDEN).send(error);
@@ -62,7 +62,7 @@ export function sessionMiddleware(
 ) {
   try {
     const session = getSession(request);
-    (request  & { session }).session = session;
+    request.session = session;
     next();
   } catch (error) {
     response.status(StatusCodes.FORBIDDEN).send(error);
