@@ -12,19 +12,14 @@ import {
 } from 'react-router-dom';
 import { paths as apiPaths } from '../../backend/endpoints/paths';
 import { paths } from '../utilities/paths';
-import { Credential } from '../../backend/utilities/credentialStorage';
-
 function generateAdminApiPath(path, params) {
   return generatePath(`/admin${path}`, params);
 }
-
 function Credential() {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [credential, setCredential] = useState();
   const [error, setError] = useState(false);
-
   useEffect(() => {
     if (credential) {
       return;
@@ -41,13 +36,11 @@ function Credential() {
       }
     })();
   }, [credential, id]);
-
   const [processing, setProcessing] = useState(false);
   const handleAttest = useCallback(async () => {
     try {
       setError(false);
       setProcessing(true);
-
       setCredential(
         await ky
           .post(generateAdminApiPath(apiPaths.credentials.attest, { id }), {
@@ -65,23 +58,19 @@ function Credential() {
       setProcessing(false);
     }
   }, [id]);
-
   const handleReject = useCallback(async () => {
     try {
       setError(false);
-
       await ky.delete(generateAdminApiPath(apiPaths.credentials.item, { id }));
       navigate(paths.admin.home);
     } catch {
       setError(true);
     }
   }, [id, navigate]);
-
   const handleRevoke = useCallback(async () => {
     try {
       setError(false);
       setProcessing(true);
-
       setCredential(
         await ky
           .post(generateAdminApiPath(apiPaths.credentials.revoke, { id }), {
@@ -99,13 +88,10 @@ function Credential() {
       setProcessing(false);
     }
   }, [id]);
-
   if (!credential) {
     return error ? <p>Credential not found</p> : null;
   }
-
   const { claim, attestation } = credential;
-
   return (
     <section>
       <pre>{JSON.stringify(claim, null, 4)}</pre>
@@ -138,7 +124,6 @@ function Credential() {
     </section>
   );
 }
-
 function Credentials({ credentials }) {
   return (
     <ul>
@@ -150,11 +135,9 @@ function Credentials({ credentials }) {
     </ul>
   );
 }
-
 function Admin() {
   const [credentials, setCredentials] = useState();
   const [error, setError] = useState(false);
-
   const pendingCredentials = credentials?.filter(
     ([, { attestation }]) => !attestation,
   );
@@ -164,25 +147,21 @@ function Admin() {
   const revokedCredentials = credentials?.filter(
     ([, { attestation }]) => attestation && attestation.revoked,
   );
-
   useEffect(() => {
     (async () => {
       try {
         const credentials = await ky
           .get(generateAdminApiPath(apiPaths.credentials.list))
           .json();
-
         setCredentials(Object.entries(credentials));
       } catch {
         setError(true);
       }
     })();
   }, []);
-
   if (!credentials) {
     return error ? <p>Unable to fetch credentials</p> : null;
   }
-
   return (
     <section>
       <h1>Admin Page</h1>
@@ -211,7 +190,6 @@ function Admin() {
     </section>
   );
 }
-
 const root = createRoot(document.querySelector('#app'));
 root.render(
   <BrowserRouter>
