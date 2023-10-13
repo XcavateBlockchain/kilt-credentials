@@ -13,7 +13,7 @@
     "test": "tsc --noEmit",
     "did-create": "node --enable-source-maps dist/backend/createDID.js",
     "did-configuration": "node --enable-source-maps dist/backend/createDIDConfiguration.js",
-    "commonjs": "mkdir -p dist && echo '{\"type\":\"commonjs\"}' > dist/package.json",
+    "commonjs": "mkdir -p dist && echo {\"type\":\"commonjs\"} > dist/package.json",
     "dev": "yarn commonjs && yarn parcel watch",
     "build": "NODE_OPTIONS=--no-experimental-fetch yarn parcel build",
     "start": "node --enable-source-maps dist/backend/server.js",

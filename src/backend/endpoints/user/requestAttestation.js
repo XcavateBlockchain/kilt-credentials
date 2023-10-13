@@ -39,6 +39,7 @@ async function handler(request, response){
     }
 
     await Credential.verifyCredential(credential);
+    // Credential.verifyDataStructure(credential);
     logger.debug('Credential data structure verified');
 
     const cTypes = Object.values(supportedCTypes);
